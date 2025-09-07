@@ -38,22 +38,66 @@
     <div id="summary"></div>
 
     <table id="results">
+
+
       <thead>
-        <tr>
-          <th>Symbol</th>
-          <th class="sortable" data-key="MomentumScore">MomentumScore <span class="arrow">↕</span></th>
-          <th>Spark</th>
-          <th class="sortable" data-key="Z_mom">Z_mom <span class="arrow">↕</span></th>
-          <th class="sortable" data-key="S1">S1 <span class="arrow">↕</span></th>
-          <th class="sortable" data-key="S2">S2 <span class="arrow">↕</span></th>
-          <th class="sortable" data-key="S3">S3 <span class="arrow">↕</span></th>
-          <th class="sortable" data-key="penalty">Penalty <span class="arrow">↕</span></th>
-          <th class="sortable" data-key="ann_vol">Ann Vol <span class="arrow">↕</span></th>
-          <th class="sortable" data-key="trend50>200">Trend 50&gt;200 <span class="arrow">↕</span></th>
-          <th class="sortable" data-key="ts_mom_sign">TS Mom Sign <span class="arrow">↕</span></th>
-          <th class="sortable" data-key="enter_long">Enter Long? <span class="arrow">↕</span></th>
-        </tr>
-      </thead>
+  <tr>
+    <th>Symbol</th>
+
+    <th class="sortable" data-key="MomentumScore"
+        title="Momentum Score: Top Secret Algo">
+      MomentumScore <span class="arrow">↕</span>
+    </th>
+
+    <th>Spark</th>
+
+    <th class="sortable" data-key="Z_mom"
+        title="Z-score of momentum: standardized vs 1y daily returns">
+      Z_mom <span class="arrow">↕</span>
+    </th>
+
+    <th class="sortable" data-key="S1"
+        title="12-month total return">
+      S1 <span class="arrow">↕</span>
+    </th>
+
+    <th class="sortable" data-key="S2"
+        title="6-month total return">
+      S2 <span class="arrow">↕</span>
+    </th>
+
+    <th class="sortable" data-key="S3"
+        title="3-month total return">
+      S3 <span class="arrow">↕</span>
+    </th>
+
+    <th class="sortable" data-key="penalty"
+        title="Penalty: volatility/noise adjustment (lower is better)">
+      Penalty <span class="arrow">↕</span>
+    </th>
+
+    <th class="sortable" data-key="ann_vol"
+        title="Annualized volatility: daily std × √252">
+      Ann Vol <span class="arrow">↕</span>
+    </th>
+
+    <th class="sortable" data-key="trend50>200"
+        title="Trend filter: 50-day moving average above 200-day">
+      Trend 50&gt;200 <span class="arrow">↕</span>
+    </th>
+
+    <th class="sortable" data-key="ts_mom_sign"
+        title="Time-Series Momentum sign: 1 if long-horizon trend is positive, else −1">
+      TS Mom Sign <span class="arrow">↕</span>
+    </th>
+
+    <th class="sortable" data-key="enter_long"
+        title="Entry decision from the ruleset">
+      Enter Long? <span class="arrow">↕</span>
+    </th>
+  </tr>
+</thead>
+
       <tbody></tbody>
     </table>
   </main>
