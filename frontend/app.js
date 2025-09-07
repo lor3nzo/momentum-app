@@ -2,7 +2,6 @@
 let SORT_KEY = "MomentumScore";
 let SORT_DIR = "desc"; // "asc" | "desc"
 let LAST_RAW_ROWS = [];
-let SHOW_TOP_ONLY = false;
 
 // ------ URL helpers ------
 function getParams(){
