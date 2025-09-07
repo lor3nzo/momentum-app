@@ -1,0 +1,1 @@
+// Full app.js with sorting, filtering, sparklines, CSV download, reset sort, copy link (from earlier steps)

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Momentum Meter</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="brand-badge">The ONE</span>
+      <span class="brand-title">Momentum Meter: Solving the Market Jim Simons's Way.</span>
+    </div>
+  </header>
+  <main>
+    <section class="controls">
+      <label>Days back:
+        <input type="number" id="daysBack" value="600" min="380" max="1200" step="10">
+      </label>
+
+      <label style="display:inline-flex;align-items:center;gap:8px;">
+        <input type="checkbox" id="topOnly">
+        Show only <b>Enter Long = YES</b>
+      </label>
+
+      <button id="refreshBtn">Refresh</button>
+      <button id="resetSortBtn" title="Reset sorting to MomentumScore desc">Reset sort</button>
+      <button id="copyLinkBtn" title="Copy a link to this exact view">Copy link</button>
+
+      <a id="downloadCsv" href="#" download="momentum_scores_all.csv" style="display:none;">Download (All)</a>
+      <a id="downloadCsvFiltered" href="#" download="momentum_scores_filtered.csv" style="display:none;">Download (Filtered)</a>
+    </section>
+
+    <div id="summary"></div>
+
+    <table id="results">
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th class="sortable" data-key="MomentumScore">MomentumScore <span class="arrow">↕</span></th>
+          <th>Spark</th>
+          <th class="sortable" data-key="Z_mom">Z_mom <span class="arrow">↕</span></th>
+          <th class="sortable" data-key="S1">S1 <span class="arrow">↕</span></th>
+          <th class="sortable" data-key="S2">S2 <span class="arrow">↕</span></th>
+          <th class="sortable" data-key="S3">S3 <span class="arrow">↕</span></th>
+          <th class="sortable" data-key="penalty">Penalty <span class="arrow">↕</span></th>
+          <th class="sortable" data-key="ann_vol">Ann Vol <span class="arrow">↕</span></th>
+          <th class="sortable" data-key="trend50>200">Trend 50&gt;200 <span class="arrow">↕</span></th>
+          <th class="sortable" data-key="ts_mom_sign">TS Mom Sign <span class="arrow">↕</span></th>
+          <th class="sortable" data-key="enter_long">Enter Long? <span class="arrow">↕</span></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
