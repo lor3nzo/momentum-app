@@ -1,8 +1,8 @@
 import os, datetime as dt
 import pandas as pd, numpy as np
 from fastapi import FastAPI, Query, HTTPException
-from fastapi.responses import JSONResponse, FileResponse   # add FileResponse
-from fastapi.staticfiles import StaticFiles                 # add StaticFiles
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 import httpx
 
 APCA_KEY = os.getenv("APCA_API_KEY_ID")
@@ -12,13 +12,12 @@ DATA_BASE = "https://data.alpaca.markets/v2"
 
 app = FastAPI()
 
-# serve the frontend files
+# serve frontend
 app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
 @app.get("/", include_in_schema=False)
 def root():
     return FileResponse("frontend/index.html")
-
 
 async def fetch_bars(sym, start_iso, end_iso):
     headers = {"APCA-API-KEY-ID": APCA_KEY, "APCA-API-SECRET-KEY": APCA_SECRET, "accept": "application/json"}
