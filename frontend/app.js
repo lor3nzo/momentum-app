@@ -60,10 +60,7 @@ function sortRows(rows){
     return mult * (String(va).localeCompare(String(vb)));
   });
 }
-function applyFilter(rows){
-  if(!SHOW_TOP_ONLY) return rows;
-  return rows.filter(r => r.enter_long === true || r.enter_long === 1);
-}
+
 
 // ------ Sparkline ------
 async function drawSparkline(td, symbol){
@@ -92,8 +89,7 @@ function renderTable(rowsIn){
   const tbody = document.querySelector('#results tbody');
   tbody.innerHTML = '';
 
-  const filtered = applyFilter(rowsIn);
-  const sorted = sortRows(filtered);
+ const sorted = sortRows(rowsIn);
 
   for(const r of sorted){
     const tr = document.createElement('tr');
@@ -152,17 +148,7 @@ function attachSorting(){
     });
   });
 }
-function attachFilters(){
-  const cb = document.getElementById('topOnly');
-  if(cb){
-    SHOW_TOP_ONLY = cb.checked;
-    cb.addEventListener('change', ()=>{
-      SHOW_TOP_ONLY = cb.checked;
-      setParams({ topOnly: SHOW_TOP_ONLY });
-      renderTable(LAST_RAW_ROWS);
-    });
-  }
-}
+
 function attachDaysBack(){
   const input = document.getElementById('daysBack');
   input.addEventListener('change', ()=>{
@@ -200,7 +186,6 @@ function attachButtons(){
 
   setParams(p); // normalize URL
   attachSorting();
-  attachFilters();
   attachDaysBack();
   attachButtons();
   refresh();
