@@ -48,7 +48,13 @@ function renderTable(rowsIn){
   rows.forEach(r=>{
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td><a class="sym" href="https://finance.yahoo.com/quote/${encodeURIComponent(r.symbol)}/" target="_blank" rel="noopener noreferrer">${r.symbol}</a></td>
+<td>
+  <a class="sym"
+     title="${r.name || r.symbol}"
+     href="https://finance.yahoo.com/quote/${encodeURIComponent(r.symbol)}/"
+     target="_blank" rel="noopener noreferrer">${r.symbol}</a>
+</td>
+
       <td>${formatNum(r.MomentumScore,1)}</td>
       <td data-spark></td>
       <td>${formatNum(r.Z_mom,3)}</td>
