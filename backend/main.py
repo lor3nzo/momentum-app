@@ -12,12 +12,12 @@ DATA_BASE = "https://data.alpaca.markets/v2"
 
 app = FastAPI()
 
-# serve frontend
 app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
 @app.get("/", include_in_schema=False)
 def root():
     return FileResponse("frontend/index.html")
+
 
 async def fetch_bars(sym, start_iso, end_iso):
     headers = {"APCA-API-KEY-ID": APCA_KEY, "APCA-API-SECRET-KEY": APCA_SECRET, "accept": "application/json"}
