@@ -1,29 +1,23 @@
-# Use small Python image
+# Simple production image
 FROM python:3.11-slim
 
-# Prevents Python from buffering stdout/stderr
-ENV PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1
+# Install build deps only if needed by pandas/numpy (slim image)
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential && rm -rf /var/lib/apt/lists/*
 
-# Workdir
 WORKDIR /app
 
-# System deps (certs, tzdata optional)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates tzdata && \
-    rm -rf /var/lib/apt/lists/*
+# Install Python deps first (better layer caching)
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy requirements and install
-COPY requirements.txt /app/requirements.txt
-RUN pip install --upgrade pip && pip install -r /app/requirements.txt
+# Copy application code (BACKEND + FRONTEND)
+COPY backend ./backend
+COPY frontend ./frontend
 
-# Copy app code (backend + frontend + any data files)
-COPY backend /app/backend
-COPY frontend /app/frontend
-COPY tickers.csv /app/tickers.csv
-
-# Expose port Render expects
+# Uvicorn will serve the FastAPI app
 EXPOSE 8000
+ENV PYTHONUNBUFFERED=1
 
-# Start API (serves index.html + /static/* via FastAPI)
+# Start the server
+# NOTE: make sure your main FastAPI app is in backend/main.py as 'app'
 CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
