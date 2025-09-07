@@ -1,32 +1,32 @@
-symbol
-MSFT
-GOOGL
-AMZN
-META
-AAPL
-ORCL
-CRM
-ADBE
-NVDA
-AMD
-AVGO
-TSM
-MU
-INTC
-QCOM
-MRVL
-SMCI
-ACN
-PLTR
-SNOW
-NOW
-PATH
-DOCU
-MDB
-AI
-SOUN
-BBAI
-SYM
-ANET
-CRWD
-S
+symbol,name
+MSFT,Microsoft Corporation
+GOOGL,Alphabet Inc.
+AMZN,Amazon.com Inc.
+META,Meta Platforms Inc.
+AAPL,Apple Inc.
+ORCL,Oracle Corporation
+CRM,Salesforce Inc.
+ADBE,Adobe Inc.
+NVDA,NVIDIA Corporation
+AMD,Advanced Micro Devices Inc.
+AVGO,Broadcom Inc.
+TSM,Taiwan Semiconductor Manufacturing Company Limited
+MU,Micron Technology Inc.
+INTC,Intel Corporation
+QCOM,QUALCOMM Incorporated
+MRVL,Marvell Technology Inc.
+SMCI,Super Micro Computer Inc.
+ACN,Accenture plc
+PLTR,Palantir Technologies Inc.
+SNOW,Snowflake Inc.
+NOW,ServiceNow Inc.
+PATH,UiPath Inc.
+DOCU,DocuSign Inc.
+MDB,MongoDB Inc.
+AI,C3.ai Inc.
+SOUN,SoundHound AI Inc.
+BBAI,BigBear.ai Holdings Inc.
+SYM,Symbotic Inc.
+ANET,Arista Networks Inc.
+CRWD,CrowdStrike Holdings Inc.
+S,SentinelOne Inc.
