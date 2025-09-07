@@ -27,16 +27,28 @@ header{
   display: flex;
   align-items: center;
   gap: 14px;
-  flex-wrap: nowrap;       /* force one line */
-  overflow: hidden;        /* hide overflow if screen too small */
-  text-overflow: ellipsis; /* show … if too long */
-  white-space: nowrap;
+  flex-wrap: nowrap;   /* keep badge + title on one line */
 }
+
 .brand-title {
   font-weight: 700;
-  font-size: 18px;
-  white-space: nowrap;     /* no breaking mid-title */
+  font-size: 20px;
+  line-height: 1.2;
+  white-space: nowrap;
 }
+
+/* Shrink text gracefully on smaller screens */
+@media (max-width: 720px) {
+  .brand-title {
+    font-size: 16px;
+  }
+}
+@media (max-width: 480px) {
+  .brand-title {
+    font-size: 14px;
+  }
+}
+
 
 main{padding:16px 24px;max-width:1100px;margin:0 auto}
 
