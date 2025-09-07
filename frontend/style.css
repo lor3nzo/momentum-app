@@ -27,11 +27,15 @@ header{
 .brand-badge{
   background:var(--primary);
   color:var(--primary-ink);
-  padding:8px 12px;
-  border-radius:12px;
-  font-weight:700;
-  letter-spacing:.2px;
+  width:40px; height:40px;          /* square */
+  border-radius:12px;               /* rounded corners */
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; line-height:1;
+  font-weight:800; letter-spacing:.2px;
 }
+.brand-badge .t{ font-size:10px; opacity:.9; margin-top:2px }
+.brand-badge .o{ font-size:14px; margin-bottom:2px }
+
 .brand-title{
   font-weight:700;
   font-size:20px;
