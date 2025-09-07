@@ -23,22 +23,19 @@ header{
   border-bottom:1px solid var(--border);
   padding:18px 24px;
 }
-.brand{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.brand-badge{
-  background:var(--primary);
-  color:var(--primary-ink);
-  width:40px; height:40px;          /* square */
-  border-radius:12px;               /* rounded corners */
-  display:flex; align-items:center; justify-content:center;
-  flex-direction:column; line-height:1;
-  font-weight:800; letter-spacing:.2px;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: nowrap;       /* force one line */
+  overflow: hidden;        /* hide overflow if screen too small */
+  text-overflow: ellipsis; /* show … if too long */
+  white-space: nowrap;
 }
-.brand-badge .t{ font-size:10px; opacity:.9; margin-top:2px }
-.brand-badge .o{ font-size:14px; margin-bottom:2px }
-
-.brand-title{
-  font-weight:700;
-  font-size:20px;
+.brand-title {
+  font-weight: 700;
+  font-size: 18px;
+  white-space: nowrap;     /* no breaking mid-title */
 }
 
 main{padding:16px 24px;max-width:1100px;margin:0 auto}
