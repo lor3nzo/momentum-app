@@ -125,9 +125,10 @@ function renderTable(rowsIn){
 
 // ------ Events ------
 async function refresh(){
-  const data = await fetchScores();
-  if(!data) return;
-  LAST_RAW_ROWS = data.rows;
+  const daysBack = document.getElementById('daysBack').value;
+  const data = await fetch(`/api/scores?days_back=${daysBack}`).then(r => r.json());
+
+  LAST_RAW_ROWS = data.rows || [];
 
   const summary = document.getElementById('summary');
   const breadth = (data.breadth==null) ? 'n/a' : (data.breadth*100).toFixed(1)+'%';
