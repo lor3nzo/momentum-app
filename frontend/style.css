@@ -23,19 +23,49 @@ header{
   border-bottom:1px solid var(--border);
   padding:18px 24px;
 }
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: nowrap;   /* keep badge + title on one line */
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;        /* allow wrap */
 }
 
-.brand-title {
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 1.2;
-  white-space: nowrap;
+.brand-title{
+  font-weight:700;
+  font-size:20px;
+  line-height:1.2;
+  white-space:normal;    /* allow wrap */
 }
+
+/* Slightly shrink on small screens so it wraps nicely */
+@media (max-width:720px){
+  .brand-title{ font-size:18px; }
+}
+@media (max-width:480px){
+  .brand-title{ font-size:16px; }
+}
+
+/* Make badge a bit smaller on very narrow screens */
+@media (max-width:480px){
+  .brand-badge{ width:36px; height:36px; border-radius:10px; }
+  .brand-badge .t{ font-size:9px }
+  .brand-badge .o{ font-size:13px }
+}
+
+
+/* Orange badge for "The ONE" */
+.brand-badge{
+  background:var(--primary);
+  color:var(--primary-ink);
+  width:40px; height:40px;        /* square */
+  border-radius:12px;             /* rounded corners */
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; line-height:1;
+  font-weight:800; letter-spacing:.2px;
+}
+.brand-badge .t{ font-size:10px; opacity:.9; margin-top:2px }
+.brand-badge .o{ font-size:14px; margin-bottom:2px }
 
 /* Shrink text gracefully on smaller screens */
 @media (max-width: 720px) {
