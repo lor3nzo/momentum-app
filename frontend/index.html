@@ -29,23 +29,17 @@
     <span class="brand-title">Momentum Meter: Solving the Market Jim Simons's Way</span>
   </div>
 </header>
-
-
   <main>
-    <section class="controls">
-      <label>Days back:
-        <input type="number" id="daysBack" value="600" min="380" max="1200" step="10">
-      </label>
+   <section class="controls">
+  <label>Days back:
+    <input type="number" id="daysBack" value="600" min="380" max="1200" step="10">
+  </label>
 
-    
+  <button id="refreshBtn">Refresh</button>
 
-      <button id="refreshBtn">Refresh</button>
-      <button id="resetSortBtn" title="Reset sorting to MomentumScore desc">Reset sort</button>
-      <button id="copyLinkBtn" title="Copy a link to this exact view">Copy link</button>
-
-      <a id="downloadCsv" href="#" download="momentum_scores_all.csv" style="display:none;">Download (All)</a>
-      <a id="downloadCsvFiltered" href="#" download="momentum_scores_filtered.csv" style="display:none;">Download (Filtered)</a>
-    </section>
+  <a id="downloadCsv" href="#" download="momentum_scores_all.csv" style="display:none;">Download (All)</a>
+  <a id="downloadCsvFiltered" href="#" download="momentum_scores_filtered.csv" style="display:none;">Download (Filtered)</a>
+</section>
 
     <div id="summary"></div>
 
