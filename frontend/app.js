@@ -20,46 +20,6 @@ function sortRows(rows) {
   });
 }
 
-// ---- permalink + clipboard ----
-function buildPermalink() {
-  const daysBack = document.getElementById("daysBack").value || 600;
-  const params = new URLSearchParams();
-  params.set("daysBack", daysBack);
-  return `${window.location.origin}/?${params.toString()}`;
-}
-
-function updateAddressBarFromState() {
-  const daysBack = document.getElementById("daysBack").value || 600;
-  const params = new URLSearchParams(window.location.search);
-  params.set("daysBack", daysBack);
-  const newUrl = `/?${params.toString()}`;
-  // Update URL without reloading
-  window.history.replaceState(null, "", newUrl);
-}
-
-/** Robust copy: Clipboard API → textarea fallback → prompt */
-async function copyToClipboard(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch (e) {
-    try {
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      ta.setAttribute("readonly", "");
-      ta.style.position = "fixed";
-      ta.style.left = "-9999px";
-      document.body.appendChild(ta);
-      ta.select();
-      const ok = document.execCommand("copy");
-      document.body.removeChild(ta);
-      if (ok) return true;
-    } catch (_) {}
-    window.prompt("Copy this link:", text);
-    return false;
-  }
-}
-
 // ------- sparkline -------
 async function drawSpark(td, symbol) {
   try {
@@ -126,9 +86,6 @@ function renderTable(rowsIn) {
 // ------- actions -------
 async function refresh() {
   const days = document.getElementById("daysBack").value || 600;
-  // keep address bar in sync with current state
-  updateAddressBarFromState();
-
   try {
     const res = await fetch(`/api/scores?days_back=${days}`);
     if (!res.ok) {
@@ -158,39 +115,12 @@ function attachSorting() {
   });
 }
 
-// ------- init -------
-function initFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  const daysBack = params.get("daysBack");
-  if (daysBack) {
-    const el = document.getElementById("daysBack");
-    if (el) el.value = daysBack;
-  }
-}
-
 function attachButtons() {
   document.getElementById("refreshBtn").addEventListener("click", refresh);
-  document.getElementById("resetSortBtn").addEventListener("click", () => {
-    SORT_KEY = "MomentumScore"; SORT_DIR = "desc"; renderTable(LAST_ROWS);
-  });
-  document.getElementById("copyLinkBtn").addEventListener("click", async () => {
-    // Keep URL synced with state
-    updateAddressBarFromState();
-    const url = buildPermalink();
-
-    // Mobile share sheet if available; otherwise copy
-    if (navigator.share) {
-      try { await navigator.share({ title: "Momentum Meter", url }); return; }
-      catch (_) { /* fall back to copy */ }
-    }
-    const ok = await copyToClipboard(url);
-    if (ok) alert("Link copied to clipboard.");
-  });
 }
 
-// Run once DOM is ready (script is already at end of body, but this is safe)
+// Run once DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
-  initFromURL();
   attachSorting();
   attachButtons();
   refresh(); // load immediately on page open
