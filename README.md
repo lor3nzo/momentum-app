@@ -27,7 +27,7 @@ Edit `tickers.csv` (single column header `symbol`). Refresh page to refetch.
 - Uses **raw** close bars (`adjustment=raw`) with `feed=iex`. Consider adjusted/total-return series for production.
 - Earnings blackout not included (separate provider needed).
 - Momentum stack: 12–1, 6–1, 3–1 (skip last month), MA50>MA200 gate, 6m TS sign, EWMA vol, breadth, composite MomentumScore + enter_long flag.
-
+  
 ## Disclaimer
 This project and the content provided are for educational and informational purposes only. Nothing in this repository or in the running app constitutes financial, investment, legal, tax, or other professional advice, and no content should be construed as a recommendation to buy, sell, or hold any security or financial instrument. The algorithms and information displayed are experimental and may be inaccurate or incomplete.
 
