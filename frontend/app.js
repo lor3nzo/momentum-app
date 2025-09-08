@@ -84,33 +84,36 @@ function renderTable(rowsIn) {
 }
 
 // ------- actions -------
-async function refresh(){
+async function refresh() {
   const days = document.getElementById("daysBack").value || 600;
-  try{
+  try {
     const res = await fetch(`/api/scores?days_back=${days}`);
-    if(!res.ok){
+    if (!res.ok) {
       document.getElementById("summary").textContent = `Error: ${res.status}`;
       return;
     }
     const data = await res.json();
     LAST_ROWS = data.rows || [];
 
-    // Use user's local computer/browser date
-    const localDate = new Date().toISOString().split("T")[0];
+    // User-local date in a friendly format (e.g., "Sep 07, 2025, EDT")
+    const dt = new Date();
+    const asOfLocal = dt.toLocaleString(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+      timeZoneName: 'short'
+    });
 
-// User-local date (YYYY-MM-DD)
-const dt = new Date();
-const asOfLocal = dt.toLocaleString(undefined, { year:'numeric', month:'short', day:'2-digit', timeZoneName:'short' });
-const breadth = (data.breadth==null) ? "n/a" : (data.breadth*100).toFixed(1)+"%";
-document.getElementById("summary").innerHTML =
-  `As of <b>${asOfLocal}</b> — Breadth: <b>${breadth}</b>.`;
-
+    const breadth = (data.breadth == null) ? "n/a" : (data.breadth * 100).toFixed(1) + "%";
+    document.getElementById("summary").innerHTML =
+      `As of <b>${asOfLocal}</b> — Breadth: <b>${breadth}</b>.`;
 
     renderTable(LAST_ROWS);
-  }catch(e){
+  } catch (e) {
     document.getElementById("summary").textContent = "Network error";
   }
 }
+
 
 
 function attachSorting() {
