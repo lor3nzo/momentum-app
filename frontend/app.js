@@ -99,7 +99,8 @@ async function refresh(){
     const localDate = new Date().toISOString().split("T")[0];
 
 // User-local date (YYYY-MM-DD)
-const asOfLocal = new Date().toLocaleDateString('en-CA'); // e.g., 2025-09-07
+const dt = new Date();
+const asOfLocal = dt.toLocaleString(undefined, { year:'numeric', month:'short', day:'2-digit', timeZoneName:'short' });
 const breadth = (data.breadth==null) ? "n/a" : (data.breadth*100).toFixed(1)+"%";
 document.getElementById("summary").innerHTML =
   `As of <b>${asOfLocal}</b> — Breadth: <b>${breadth}</b>.`;
