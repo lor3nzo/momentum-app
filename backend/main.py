@@ -180,15 +180,16 @@ async def compute_scores(days_back: int = 600):
         )
         ts_mom_sign = 1 if s[-1] >= (sma200.iloc[-1] if not np.isnan(sma200.iloc[-1]) else s[-1]) else -1
 
-        # Momentum legs: 12m / 6m / 3m total returns
-        def t_return(n: int):
-            if len(s) <= n:
-                return np.nan
-            return (s[-1] / s[-n - 1]) - 1.0
+# Momentum legs: 12m / 6m / 3m total returns
+def t_return(n: int):
+    if len(s) <= n:
+        return np.nan
+    return (s[-1] / s[-n - 1]) - 1.0
 
-        S1 = t_return(252)   # ~12m
-        S2 = t_return(126)   # ~6m
-        S3 = t_return(63)    # ~3m
+S1 = t_return(252)   # ~12m
+S2 = t_return(126)   # ~6m
+S3 = t_return(63)    # ~3m
+
 
         # Z-score of last 60d return vs 1y daily returns
         look = 60
