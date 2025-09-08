@@ -84,24 +84,30 @@ function renderTable(rowsIn) {
 }
 
 // ------- actions -------
-async function refresh() {
+async function refresh(){
   const days = document.getElementById("daysBack").value || 600;
-  try {
+  try{
     const res = await fetch(`/api/scores?days_back=${days}`);
-    if (!res.ok) {
+    if(!res.ok){
       document.getElementById("summary").textContent = `Error: ${res.status}`;
       return;
     }
     const data = await res.json();
     LAST_ROWS = data.rows || [];
-    const breadth = (data.breadth == null) ? "n/a" : (data.breadth * 100).toFixed(1) + "%";
+
+    // Use user's local computer/browser date
+    const localDate = new Date().toISOString().split("T")[0];
+
+    const breadth = (data.breadth==null) ? "n/a" : (data.breadth*100).toFixed(1)+"%";
     document.getElementById("summary").innerHTML =
-      `As of <b>${data.as_of}</b> — Breadth: <b>${breadth}</b>.`;
+      `As of <b>${localDate}</b> — Breadth: <b>${breadth}</b>.`;
+
     renderTable(LAST_ROWS);
-  } catch (e) {
+  }catch(e){
     document.getElementById("summary").textContent = "Network error";
   }
 }
+
 
 function attachSorting() {
   document.querySelectorAll("th.sortable").forEach(th => {
