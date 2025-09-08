@@ -175,6 +175,17 @@ footer {
 footer a { color: var(--primary); text-decoration: none; }
 footer a:hover { text-decoration: underline; }
 
+footer .disclaimer {
+  margin-top: 20px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #777;
+}
+
+
 @media (max-width:720px){
   .brand-title{font-size:18px}
   .spark{width:80px}
