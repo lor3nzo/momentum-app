@@ -4,6 +4,7 @@ let SORT_DIR = "desc";
 let LAST_ROWS = [];
 
 // ------- helpers -------
+
 function formatNum(x, d=3){ return (x==null || isNaN(x)) ? "" : Number(x).toFixed(d); }
 function formatPct(x, d=1){ return (x==null || isNaN(x)) ? "" : (Number(x)*100).toFixed(d) + "%"; }
 function truth(v){ return (v===true || v===1) ? "✔︎" : ""; }
@@ -19,6 +20,50 @@ function sortRows(rows){
     return m*String(va).localeCompare(String(vb));
   });
 }
+
+
+function buildPermalink() {
+  const daysBack = document.getElementById("daysBack").value || 600;
+  const params = new URLSearchParams();
+  params.set("daysBack", daysBack);
+  return `${window.location.origin}/?${params.toString()}`;
+}
+
+function updateAddressBarFromState() {
+  const daysBack = document.getElementById("daysBack").value || 600;
+  const params = new URLSearchParams(window.location.search);
+  params.set("daysBack", daysBack);
+  const newUrl = `/?${params.toString()}`;
+  // Update URL without reloading
+  window.history.replaceState(null, "", newUrl);
+}
+
+/** Robust copy: tries Clipboard API, then textarea fallback, then prompt */
+async function copyToClipboard(text) {
+  try {
+    // Most modern browsers (HTTPS + user gesture)
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (e) {
+    try {
+      // Fallback for iOS Safari / older browsers
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      if (ok) return true;
+    } catch (_) {}
+    // Ultimate fallback: show a prompt the user can copy from
+    window.prompt("Copy this link:", text);
+    return false;
+  }
+}
+
 
 // ------- sparkline -------
 async function drawSpark(td, symbol){
