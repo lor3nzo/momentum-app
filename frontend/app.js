@@ -98,9 +98,12 @@ async function refresh(){
     // Use user's local computer/browser date
     const localDate = new Date().toISOString().split("T")[0];
 
-    const breadth = (data.breadth==null) ? "n/a" : (data.breadth*100).toFixed(1)+"%";
-    document.getElementById("summary").innerHTML =
-      `As of <b>${localDate}</b> — Breadth: <b>${breadth}</b>.`;
+// User-local date (YYYY-MM-DD)
+const asOfLocal = new Date().toLocaleDateString('en-CA'); // e.g., 2025-09-07
+const breadth = (data.breadth==null) ? "n/a" : (data.breadth*100).toFixed(1)+"%";
+document.getElementById("summary").innerHTML =
+  `As of <b>${asOfLocal}</b> — Breadth: <b>${breadth}</b>.`;
+
 
     renderTable(LAST_ROWS);
   }catch(e){
