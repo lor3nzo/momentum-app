@@ -183,7 +183,9 @@ footer .disclaimer {
   font-size: 12px;
   line-height: 1.4;
   color: #777;
+  text-align: justify;   /* 👈 new line */
 }
+
 
 
 @media (max-width:720px){
