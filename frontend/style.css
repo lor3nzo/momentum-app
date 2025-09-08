@@ -184,16 +184,16 @@ footer .disclaimer {
   line-height: 1.4;
   color: #777;
   text-align: justify;
-  padding: 0 15px;   /* adds side padding on small screens */
+  padding: 0 15px;   /* applies padding for all devices */
 }
 
-/* On mobile, override to center */
 @media (max-width: 600px) {
   footer .disclaimer {
-    text-align: left;   /* easier to read on small screens */
-    padding: 0 20px;    /* more breathing room on the sides */
+    font-size: 11px;   /* slightly smaller on mobile */
+    padding: 0 20px;   /* more breathing room */
   }
 }
+
 
 
 
