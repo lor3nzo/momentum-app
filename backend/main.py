@@ -21,14 +21,25 @@ ASSETS_BASE = "https://api.alpaca.markets/v2"  # trading API for asset metadata 
 # simple in-memory cache for company names
 NAMES_CACHE: dict[str, str | None] = {}
 
+# simple concurrency limiter for outbound calls
+SEM = asyncio.Semaphore(8)
+
 app = FastAPI()
 
 # ---- Serve frontend (CSS/JS) and index.html ----
-app.mount("/static", StaticFiles(directory="frontend"), name="static")
+FRONTEND_DIR = os.path.join(os.getcwd(), "frontend")
+if os.path.isdir(FRONTEND_DIR):
+    app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 
 @app.get("/", include_in_schema=False)
 def root():
-    return FileResponse("frontend/index.html")
+    index_path = os.path.join(FRONTEND_DIR, "index.html")
+    if os.path.isfile(index_path):
+        return FileResponse(index_path)
+    return JSONResponse(
+        {"message": "UI not found. Place frontend/index.html and /static assets."},
+        status_code=404,
+    )
 
 
 # ---------- helpers: CSV loading & name lookup ----------
@@ -78,12 +89,17 @@ async def fetch_company_name(symbol: str) -> str | None:
         "accept": "application/json",
     }
     url = f"{ASSETS_BASE}/assets/{sym}"
-    async with httpx.AsyncClient(timeout=20) as client:
-        r = await client.get(url, headers=headers)
-    if r.status_code != 200:
-        NAMES_CACHE[sym] = None
-        return None
-    name = r.json().get("name")
+    try:
+        async with SEM:
+            async with httpx.AsyncClient(timeout=20) as client:
+                r = await client.get(url, headers=headers)
+        if r.status_code != 200:
+            NAMES_CACHE[sym] = None
+            return None
+        name = r.json().get("name")
+    except Exception:
+        name = None
+
     NAMES_CACHE[sym] = name
     return name
 
@@ -111,10 +127,14 @@ async def fetch_bars(sym: str, start_iso: str, end_iso: str) -> pd.DataFrame | N
         "feed": FEED,
     }
 
-    async with httpx.AsyncClient(timeout=30) as client:
-        r = await client.get(f"{DATA_BASE}/stocks/{sym}/bars", headers=headers, params=params)
-        if r.status_code != 200:
-            raise HTTPException(status_code=r.status_code, detail=r.text)
+    async with SEM:
+        async with httpx.AsyncClient(timeout=30) as client:
+            r = await client.get(f"{DATA_BASE}/stocks/{sym}/bars", headers=headers, params=params)
+            if r.status_code != 200:
+                msg = r.text
+                if isinstance(msg, str) and len(msg) > 500:
+                    msg = msg[:500] + "...(truncated)"
+                raise HTTPException(status_code=r.status_code, detail=msg)
 
     js = r.json()
     bars = js.get("bars", [])
@@ -124,7 +144,9 @@ async def fetch_bars(sym: str, start_iso: str, end_iso: str) -> pd.DataFrame | N
     df = pd.DataFrame(bars)
     df["t"] = pd.to_datetime(df["t"])
     df = df.sort_values("t").reset_index(drop=True)
-    df = df.rename(columns={"t": "date", "o": "open", "h": "high", "l": "low", "c": "close", "v": "volume"})
+    df = df.rename(
+        columns={"t": "date", "o": "open", "h": "high", "l": "low", "c": "close", "v": "volume"}
+    )
     return df[["date", "open", "high", "low", "close", "volume"]]
 
 
@@ -180,16 +202,15 @@ async def compute_scores(days_back: int = 600):
         )
         ts_mom_sign = 1 if s[-1] >= (sma200.iloc[-1] if not np.isnan(sma200.iloc[-1]) else s[-1]) else -1
 
-# Momentum legs: 12m / 6m / 3m total returns (skip last month)
-def t_return(n: int) -> float:
-     if len(s) <= n + 21:
-         return np.nan
-     return (s[-22] / s[-n - 22]) - 1.0
+        # Momentum legs: 12m / 6m / 3m total returns (skip last month)
+        def t_return(n: int) -> float:
+            if len(s) <= n + 21:
+                return np.nan
+            return (s[-22] / s[-n - 22]) - 1.0
 
-S1 = t_return(252)   # ~12m
-S2 = t_return(126)   # ~6m
-S3 = t_return(63)    # ~3m
-
+        S1 = t_return(252)   # ~12m
+        S2 = t_return(126)   # ~6m
+        S3 = t_return(63)    # ~3m
 
         # Z-score of last 60d return vs 1y daily returns
         look = 60
@@ -206,7 +227,7 @@ S3 = t_return(63)    # ~3m
 
         rows.append({
             "symbol": sym,
-            "name": name_map.get(sym),  # <-- include company name
+            "name": name_map.get(sym),  # include company name
             "S1": float(S1) if pd.notna(S1) else None,
             "S2": float(S2) if pd.notna(S2) else None,
             "S3": float(S3) if pd.notna(S3) else None,
