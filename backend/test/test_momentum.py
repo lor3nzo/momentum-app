@@ -16,8 +16,13 @@ def test_compute_scores_positive_momentum():
     assert row["MomentumScore"] > 0
     assert row["enter_long"]
     prices_up = pd.DataFrame({"close": np.linspace(1, 400, 320)})
+    scores_single, _ = compute_scores({"AAA": prices_up})
+    row_single = scores_single.iloc[0]
+    assert row_single["MomentumScore"] > 0
+
     prices_down = pd.DataFrame({"close": np.linspace(400, 1, 320)})
     scores, breadth = compute_scores({"AAA": prices_up, "BBB": prices_down})
+    scores, _ = compute_scores({"AAA": prices_up, "BBB": prices_down})
     row_up = scores[scores["symbol"] == "AAA"].iloc[0]
     row_down = scores[scores["symbol"] == "BBB"].iloc[0]
     assert row_up["MomentumScore"] > row_down["MomentumScore"]
